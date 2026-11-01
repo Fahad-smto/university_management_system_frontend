@@ -1,17 +1,18 @@
-import { redirect } from 'next/navigation';
-import { DashboardShell } from '@/components/layout/dashboard-shell';
-import { getMe } from '@/service/session';
+import { Skeleton } from '@/components/ui/skeleton';
 
-export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const me = await getMe();
-
-  if (!me.success) {
-    // token is valid but the backend does not accept it any more (blocked or deleted): clean the cookies
-    if (me.status === 401 || me.status === 403) redirect('/api/auth/clear');
-    throw new Error(me.message);
-  }
-
-  const { name, email, role, profileImage } = me.data;
-
-  return <DashboardShell user={{ name, email, role, profileImage: profileImage ?? null }}>{children}</DashboardShell>;
+export default function Loading() {
+  return (
+    <div className="space-y-8">
+      <div className="space-y-3">
+        <Skeleton className="h-9 w-64" />
+        <Skeleton className="h-5 w-96 max-w-full" />
+      </div>
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        {Array.from({ length: 4 }).map((_, index) => (
+          <Skeleton key={index} className="h-28 rounded-2xl" />
+        ))}
+      </div>
+      <Skeleton className="h-72 rounded-2xl" />
+    </div>
+  );
 }

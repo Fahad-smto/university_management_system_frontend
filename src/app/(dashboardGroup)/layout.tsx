@@ -15,3 +15,4 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   return <DashboardShell user={{ name, email, role, profileImage: profileImage ?? null }}>{children}</DashboardShell>;
 }
+export const dynamic = 'force-dynamic';
